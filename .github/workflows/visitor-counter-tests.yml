@@ -8,34 +8,9 @@ on:
   pull_request:
 
 jobs:
-  backend-tests:
-    name: Backend tests
-    runs-on: forge
-
-    defaults:
-      run:
-        working-directory: visitor-counter/backend
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install backend dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt -r requirements-dev.txt
-
-      - name: Run backend tests
-        run: pytest
-
   frontend-tests:
     name: Frontend tests
-    runs-on: ubuntu-latest
+    runs-on: forge
 
     defaults:
       run:
@@ -57,3 +32,29 @@ jobs:
 
       - name: Run frontend tests
         run: npm test
+
+  backend-tests:
+    name: Backend tests
+    runs-on: forge
+    needs: frontend-tests
+
+    defaults:
+      run:
+        working-directory: visitor-counter/backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run backend tests
+        run: pytest
