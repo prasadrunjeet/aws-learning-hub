@@ -36,7 +36,6 @@ jobs:
   backend-tests:
     name: Backend tests
     runs-on: forge
-    needs: frontend-tests
 
     defaults:
       run:
