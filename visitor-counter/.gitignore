@@ -1,0 +1,38 @@
+# Python backend
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.python-version
+
+# Node frontend
+node_modules/
+dist/
+build/
+coverage/
+.npm/
+.pnpm-store/
+.vite/
+
+# Docker / local artifacts
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
