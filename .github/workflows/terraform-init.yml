@@ -13,11 +13,6 @@ on:
         required: true
         default: "ap-south-1"
         type: string
-      aws_profile:
-        description: "AWS CLI profile configured on the self-hosted runner"
-        required: true
-        default: "ADAC-DevOps"
-        type: string
   push:
     branches:
       - main
@@ -33,13 +28,15 @@ jobs:
     defaults:
       run:
         working-directory: terraform
-    env:
-      AWS_PROFILE: ${{ inputs.aws_profile || vars.AWS_PROFILE }}
-      AWS_SDK_LOAD_CONFIG: "1"
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
+      - name: Configure AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ inputs.aws_region || vars.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
 
       - name: Validate AWS credentials
         run: |
@@ -50,8 +47,8 @@ jobs:
 
       - name: Initialize Terraform backend
         env:
-          STATE_BUCKET: ${{ inputs.state_bucket }}
-          AWS_REGION: ${{ inputs.aws_region }}
+          STATE_BUCKET: ${{ inputs.state_bucket || vars.TF_STATE_BUCKET }}
+          AWS_REGION: ${{ inputs.aws_region || vars.AWS_REGION }}
         run: terraform init -input=false -backend-config="bucket=${STATE_BUCKET}" -backend-config="region=${AWS_REGION}"
 
       - name: Validate Terraform
