@@ -10,7 +10,7 @@ on:
 jobs:
   frontend-tests:
     name: Frontend tests
-    runs-on: k8s
+    runs-on: self-hosted
 
     defaults:
       run:
