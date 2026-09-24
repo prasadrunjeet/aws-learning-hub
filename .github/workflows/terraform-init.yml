@@ -6,12 +6,16 @@ on:
       state_bucket:
         description: "Globally unique S3 bucket name for Terraform state"
         required: true
+        default: "my-uq-state-bkt"
         type: string
       aws_region:
         description: "AWS region for the Terraform state bucket"
         required: true
         default: "ap-south-1"
         type: string
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -27,13 +31,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ inputs.aws_region }}
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+      - name: Validate AWS credentials
+        run: |
+          if ! aws sts get-caller-identity; then
+            echo "AWS credentials are not configured correctly."
+            exit 1
+          fi
 
       - name: Initialize Terraform backend
         env:
