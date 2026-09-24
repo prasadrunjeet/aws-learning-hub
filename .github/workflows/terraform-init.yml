@@ -13,6 +13,11 @@ on:
         required: true
         default: "ap-south-1"
         type: string
+      aws_profile:
+        description: "AWS CLI profile configured on the self-hosted runner"
+        required: true
+        default: "ADAC-DevOps"
+        type: string
   push:
     branches:
       - main
@@ -28,6 +33,9 @@ jobs:
     defaults:
       run:
         working-directory: terraform
+    env:
+      AWS_PROFILE: ${{ inputs.aws_profile || vars.AWS_PROFILE }}
+      AWS_SDK_LOAD_CONFIG: "1"
 
     steps:
       - name: Checkout repository

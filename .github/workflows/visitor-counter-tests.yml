@@ -35,7 +35,7 @@ jobs:
 
   backend-tests:
     name: Backend tests
-    runs-on: forge
+    runs-on: self-hosted
 
     defaults:
       run:
