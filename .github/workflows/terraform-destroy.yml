@@ -16,7 +16,7 @@ jobs:
   destroy:
     name: Terraform destroy
     if: ${{ inputs.confirmation == 'DESTROY' }}
-    runs-on: ubuntu-latest
+    runs-on: k8s
     defaults:
       run:
         working-directory: terraform
