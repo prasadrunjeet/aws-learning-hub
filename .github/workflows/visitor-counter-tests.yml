@@ -10,7 +10,7 @@ on:
 jobs:
   frontend-tests:
     name: Frontend tests
-    runs-on: forge
+    runs-on: k8s
 
     defaults:
       run:
