@@ -67,10 +67,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Enable CORS so the frontend (served on port 8001 during development) can call the API.
+def get_allowed_origins() -> list[str]:
+    configured_origins = os.getenv("CORS_ALLOWED_ORIGINS")
+    if configured_origins:
+        return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
+    return ["http://localhost:8001", "http://127.0.0.1:8001"]
+
+
+# Allow the browser frontend to call the API from its own origin.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8001", "http://127.0.0.1:8001"],
+    allow_origins=get_allowed_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
