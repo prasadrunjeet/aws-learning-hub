@@ -21,28 +21,52 @@ same Availability Zone. Private subnets can initiate outbound connections,
 but they do not accept direct inbound connections from the internet.
 
 ```mermaid
-flowchart TB
-	Internet((Internet))
-	IGW[Internet Gateway]
-	VPC[VPC 192.168.0.0/16]
+flowchart LR
+	users((Users))
+	internet((Internet))
+	igw[Internet Gateway]
 
-	Internet --> IGW
-	IGW --> PublicRT[Public route table\n0.0.0.0/0 -> IGW]
-	PublicRT --> Public1[Public subnet 1\n192.168.1.0/24]
-	PublicRT --> Public2[Public subnet 2\n192.168.2.0/24]
+	subgraph vpc["VPC 192.168.0.0/16"]
+		direction LR
 
-	Public1 --> NAT1[NAT Gateway 1\nElastic IP]
-	Public2 --> NAT2[NAT Gateway 2\nElastic IP]
+		subgraph az1["Availability Zone 1"]
+			public1["Public subnet 1<br/>192.168.1.0/24"]
+			nat1["NAT Gateway 1<br/>Elastic IP"]
+			private1["Private subnet 1<br/>192.168.11.0/24"]
+			privateRoute1["Private route table 1<br/>0.0.0.0/0 -> NAT 1"]
 
-	NAT1 --> PrivateRT1[Private route table 1\n0.0.0.0/0 -> NAT 1]
-	NAT2 --> PrivateRT2[Private route table 2\n0.0.0.0/0 -> NAT 2]
-	PrivateRT1 --> Private1[Private subnet 1\n192.168.11.0/24]
-	PrivateRT2 --> Private2[Private subnet 2\n192.168.12.0/24]
+			public1 --> nat1
+			private1 --> privateRoute1 --> nat1
+		end
 
-	VPC --- Public1
-	VPC --- Public2
-	VPC --- Private1
-	VPC --- Private2
+		subgraph az2["Availability Zone 2"]
+			public2["Public subnet 2<br/>192.168.2.0/24"]
+			nat2["NAT Gateway 2<br/>Elastic IP"]
+			private2["Private subnet 2<br/>192.168.12.0/24"]
+			privateRoute2["Private route table 2<br/>0.0.0.0/0 -> NAT 2"]
+
+			public2 --> nat2
+			private2 --> privateRoute2 --> nat2
+		end
+
+		publicRoute["Public route table<br/>0.0.0.0/0 -> IGW"]
+		publicRoute --> public1
+		publicRoute --> public2
+	end
+
+	users --> internet --> igw --> publicRoute
+	nat1 --> igw
+	nat2 --> igw
+
+	classDef edge fill:#e8f1fb,stroke:#4b76a8,color:#172b4d
+	classDef public fill:#e7f4e4,stroke:#4d8b4d,color:#193b19
+	classDef private fill:#fff1db,stroke:#c88a2e,color:#51350d
+	classDef gateway fill:#f9e2e2,stroke:#bd4b4b,color:#521b1b
+
+	class users,internet edge
+	class public1,public2,publicRoute public
+	class private1,private2,privateRoute1,privateRoute2 private
+	class igw,nat1,nat2 gateway
 ```
 
 The VPC is implemented as the reusable local module in
