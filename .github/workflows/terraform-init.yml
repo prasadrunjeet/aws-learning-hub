@@ -19,7 +19,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   initialize:
@@ -28,15 +27,10 @@ jobs:
     defaults:
       run:
         working-directory: terraform
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
-      - name: Configure AWS credentials with OIDC
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ inputs.aws_region || vars.AWS_REGION }}
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
 
       - name: Validate AWS credentials
         run: |

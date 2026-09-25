@@ -37,6 +37,7 @@ jobs:
     name: Backend tests
     runs-on: self-hosted
 
+
     defaults:
       run:
         working-directory: visitor-counter/backend
