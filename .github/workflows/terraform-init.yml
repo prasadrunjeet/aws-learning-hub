@@ -31,9 +31,6 @@ jobs:
           fi
 
       - name: Initialize Terraform backend
-        env:
-          STATE_BUCKET: ${{ inputs.state_bucket || vars.TF_STATE_BUCKET }}
-          AWS_REGION: ${{ inputs.aws_region || vars.AWS_REGION }}
         run: terraform init -input=false -backend-config="bucket=my-uq-state-bkt" -backend-config="region=ap-south-1"
 
       - name: Validate Terraform
@@ -41,3 +38,6 @@ jobs:
 
       - name: Create Terraform plan
         run: terraform plan -input=false -out=tfplan
+
+      - name: apply Terraform plan
+        run: terraform apply -input=false tfplan
