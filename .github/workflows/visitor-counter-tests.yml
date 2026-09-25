@@ -2,10 +2,6 @@ name: Visitor Counter Tests
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
 
 jobs:
   frontend-tests:
