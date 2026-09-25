@@ -10,11 +10,7 @@ on:
 jobs:
   frontend-tests:
     name: Frontend tests
-<<<<<<< HEAD
     runs-on: self-hosted
-=======
-    runs-on: forge
->>>>>>> main
 
     defaults:
       run:
@@ -39,11 +35,8 @@ jobs:
 
   backend-tests:
     name: Backend tests
-<<<<<<< HEAD
     runs-on: self-hosted
-=======
-    runs-on: forge
->>>>>>> main
+
 
     defaults:
       run:
