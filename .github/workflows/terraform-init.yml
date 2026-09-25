@@ -2,17 +2,6 @@ name: Terraform Init
 
 on:
   workflow_dispatch:
-    inputs:
-      state_bucket:
-        description: "Globally unique S3 bucket name for Terraform state"
-        required: true
-        default: "my-uq-state-bkt"
-        type: string
-      aws_region:
-        description: "AWS region for the Terraform state bucket"
-        required: true
-        default: "ap-south-1"
-        type: string
   push:
     branches:
       - main
@@ -45,7 +34,7 @@ jobs:
         env:
           STATE_BUCKET: ${{ inputs.state_bucket || vars.TF_STATE_BUCKET }}
           AWS_REGION: ${{ inputs.aws_region || vars.AWS_REGION }}
-        run: terraform init -input=false -backend-config="bucket=${STATE_BUCKET}" -backend-config="region=${AWS_REGION}"
+        run: terraform init -input=false -backend-config="bucket=my-uq-state-bkt" -backend-config="region=ap-south-1"
 
       - name: Validate Terraform
         run: terraform validate
