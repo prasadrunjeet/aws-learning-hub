@@ -37,3 +37,8 @@ output "private_subnet_ids" {
   description = "IDs of the private subnets."
   value       = module.vpc.private_subnet_ids
 }
+
+output "nat_gateway_ids" {
+  description = "IDs of the NAT Gateways."
+  value       = module.vpc.nat_gateway_ids
+}
