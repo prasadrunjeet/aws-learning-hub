@@ -7,8 +7,22 @@ module for the visitor counter infrastructure, including an Amazon ECS cluster.
 
 The root configuration creates an ECS cluster named from `vpc_name` with an
 `-ecs` suffix. Its name and ARN are available as the `ecs_cluster_name` and
-`ecs_cluster_arn` Terraform outputs. The cluster is an empty control-plane
-resource: it does not create a task definition, service, or compute capacity.
+`ecs_cluster_arn` Terraform outputs.
+
+It also registers a Fargate task definition for the visitor-counter backend.
+The task uses 0.25 vCPU, 512 MiB of memory, exposes container port 8000, and
+sends logs to a CloudWatch log group retained for 30 days. The execution role
+allows ECS to pull the image and publish logs. This does not create a running
+ECS service or task.
+
+Set `visitor_counter_image` to the full image URI in ECR, for example:
+
+```bash
+terraform plan -var="visitor_counter_image=123456789012.dkr.ecr.ap-south-1.amazonaws.com/visitor-counter:latest"
+```
+
+The task definition ARN is available as the
+`visitor_counter_task_definition_arn` output.
 
 ## VPC architecture
 

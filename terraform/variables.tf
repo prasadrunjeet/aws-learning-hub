@@ -1,6 +1,16 @@
 variable "aws_region" {
-  description = "AWS region in which to create the VPC."
+  description = "AWS region in which to create the infrastructure."
   type        = string
+}
+
+variable "visitor_counter_image" {
+  description = "Full container image URI for the visitor-counter backend."
+  type        = string
+
+  validation {
+    condition     = length(trimspace(var.visitor_counter_image)) > 0
+    error_message = "Set visitor_counter_image to a non-empty container image URI."
+  }
 }
 
 variable "vpc_name" {

@@ -17,3 +17,4 @@ tags = {
   Project   = "aws-learning-hub"
   ManagedBy = "Terraform"
 }
+
