@@ -1,7 +1,14 @@
 # Terraform
 
 This directory contains the Terraform root configuration and reusable VPC
-module for the visitor counter infrastructure.
+module for the visitor counter infrastructure, including an Amazon ECS cluster.
+
+## ECS cluster
+
+The root configuration creates an ECS cluster named from `vpc_name` with an
+`-ecs` suffix. Its name and ARN are available as the `ecs_cluster_name` and
+`ecs_cluster_arn` Terraform outputs. The cluster is an empty control-plane
+resource: it does not create a task definition, service, or compute capacity.
 
 ## VPC architecture
 
