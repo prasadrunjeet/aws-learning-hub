@@ -18,3 +18,4 @@ tags = {
   ManagedBy = "Terraform"
 }
 
+visitor_counter_image = "445567100428.dkr.ecr.ap-south-1.amazonaws.com/visitor-counter/frontend:v1.0.0"
