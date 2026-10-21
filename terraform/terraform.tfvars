@@ -1,6 +1,6 @@
 aws_region = "ap-south-1"
 
-vpc_name = "aws-learning-hub-vpc"
+vpc_name = "counter"
 vpc_cidr = "192.168.0.0/16"
 
 public_subnet_cidrs = [
